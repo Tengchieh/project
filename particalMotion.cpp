@@ -84,8 +84,9 @@ int jac(double t, const double y[], double *dfdy, double dfdt[], void *params) {
 }
 int main(void) {
     double mu = 5;
+    const gsl_odeiv2_step_type* method = gsl_odeiv2_step_rk8pd; //gsl_odeiv2_step_rk4	gsl_odeiv2_step_rkf45 gsl_odeiv2_step_rk8pd
     gsl_odeiv2_system sys = { func, jac, 6, &mu };
-    gsl_odeiv2_driver *d = gsl_odeiv2_driver_alloc_y_new(&sys,gsl_odeiv2_step_rk4, 1e-6, 1e-6, 0.0);
+    gsl_odeiv2_driver *d = gsl_odeiv2_driver_alloc_y_new(&sys, method, 1e-6, 1e-6, 0.0);
     int i;
     double t = 0.0, t1 = 5.0;
     const double x0 = 0.0;
