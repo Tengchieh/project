@@ -46,14 +46,17 @@ int main(int argc, char **argv)
     if(grvy_input_fread_int("output_mode",&output_mode))
         printf("--> %-10s = %i\n","output_mode", output_mode);
 
- /*   if(problem==1){
+    if(problem==1){
         if(method==1)   SIMPLE_ODE_FORWARD(step_size, vf_mode, output_mode);
         else if(method==2)  SIMPLE_ODE_GSL(step_size, vf_mode, output_mode);
-        else    printf("Choose wrong method number, please select 1  or 2\n");
+        else    printf("Choose wrong method number, please select 1  or 2.\n");
     }else if(problem==2){
-        CHARGED_PARTICAL_MOTION(method, step_size, vf_mode, output_mode);
+	if(method>3){	
+		printf("Choose wrong method number, please select 1 to 3.\n")
+		break;
+        else CHARGED_PARTICAL_MOTION(method, step_size, vf_mode, output_mode);
     }else   printf("Choose wrong problem number, please select 1  or 2\n");
-   */ 
+    
     
     
     /* Close the file */
