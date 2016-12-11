@@ -138,7 +138,9 @@ void CHARGED_PARTICAL_MOTION(int method_sl,double step_size) {
     const double w0 = 2.0;
     double y[6] = {x0, y0, z0, u0, v0, w0};
     const int N = t1/step_size;
-    printf("time\t \t(x, \t\ty, \t\tz\t)   exact solution(x, \t\ty, \t\tz\t)\n");
+    printf("time\t \t(x, \t\ty, \t\tz\t)");
+    if(vf_mode==1) printf("\tanalytical sol(x, y, \t\tz ) \t\terror\%");
+    printf("\n");
     for (i = 0; i <= N; i++) {
         double ti = i * step_size;
         int status = gsl_odeiv2_driver_apply(d, &t, ti, y);
@@ -150,9 +152,15 @@ void CHARGED_PARTICAL_MOTION(int method_sl,double step_size) {
             printf("error, return value=%d\n", status);
             break;
         }
-	if(output_mode==2&&i==1&&method_sl==3)        printf("\ntime\t \t(x, \t\ty, \t\tz\t)   exact solution(x, \t\ty, \t\tz\t)\n");
-	else if(output_mode==2&&i==1)	jacobian_matrix_print(); 
-        printf("%.5e\t%.5e\t%.5e\t%.5e\t%.5e\t%.5e\t%.5e\n", t, y[0], y[1], y[2], ana_x, ana_y, ana_z);
+	if(i==1&&output_mode==2){
+		if(method_sl!=3)   jacobian_matrix_print();
+		printf("\ntime\t \t(x, \t\ty, \t\tz\t)");   
+		if(vf_mode==1) 	printf("\tanalytical sol(x, y, \t\tz ) \t\terror\%");
+		printf("\n");
+	}
+        printf("%.5e\t%.5e\t%.5e\t%.5e\t", t, y[0], y[1], y[2]);
+	if(vf_mode==1)	printf("%.5e\t%.5e\t%.5e\t%.5e", ana_x, ana_y, ana_z, (ana_x-y[0])/ana_x);
+	printf("\n");
     }
     gsl_odeiv2_driver_free(d);
     printf("\n...and done!\n");

@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     /* Initialize/read the file */
     
     igot = grvy_input_fopen("./input.dat");
-    
+    grvy_timer_init(__FILE__);
     /* Read specific variables and echo locally */
     
     if(grvy_input_fread_int("problem",&problem))
@@ -51,18 +51,29 @@ int main(int argc, char **argv)
         printf("--> %-10s = %i\n","output_mode", output_mode);
 
     if(problem==1){
-        if(method==1)   SIMPLE_ODE_FORWARD(step_size);
-        else if(method==2)  SIMPLE_ODE_GSL(step_size);
+        if(method==1){
+		grvy_timer_begin("Simple ODE with forward Euler");
+		SIMPLE_ODE_FORWARD(step_size);
+		grvy_timer_end("Simple ODE with forward Euler");
+	}
+        else if(method==2){  
+		grvy_timer_begin("Simple ODE using GSL lib");
+		SIMPLE_ODE_GSL(step_size);
+		grvy_timer_end("Simple ODE using GSL lib");
+	}
         else    printf("Choose wrong method number, please select 1  or 2.\n");
     }else if(problem==2){
+	grvy_timer_begin("Charged Particle");
 	if(method>3){	
 		printf("Choose wrong method number, please select 1 to 3.\n");
 		exit(0);
 	}
         else CHARGED_PARTICAL_MOTION(method, step_size);
+        grvy_timer_end("Charged Particle");
     }else   printf("Choose wrong problem number, please select 1  or 2\n");
     
-    
+    grvy_timer_finalize();
+    grvy_timer_summarize();
     
     /* Close the file */
     

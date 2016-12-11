@@ -6,7 +6,7 @@
 # Problems Selection : 1 -> Simple ODE. 2 -> Charged particle motion in a vertical elecric field.
 #------------------------------------------
 
-problem    = 1
+problem    = 2
 
 
 #--------------------------------
@@ -16,7 +16,7 @@ problem    = 1
 # For Simple ODE : 1 -> Forward Euler. 2 -> GSL Runge–Kutta method.
 # For Charged particle motion : 1 -> Classical Runge–Kutta method. 2 ->
 
-method  = 2
+method  = 1
 
 #--------------------------------
 # Step Size (h) Selection
@@ -28,11 +28,11 @@ step_size   = 0.05
 # Verification Mode Selection : 0 is turn off; 1 is turn on.
 #--------------------------------
 
-vf_mode = 1
+vf_mode = 0
 
 #--------------------------------
 # Output Mode Selection : 1 -> Standard output mode. 2 -> Debug output mode.
 #--------------------------------
 
-output_mode = 2
+output_mode = 1
 
