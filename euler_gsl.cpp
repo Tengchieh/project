@@ -39,7 +39,7 @@ void SIMPLE_ODE_GSL(double step_size) {
     gsl_odeiv2_system sys = { func_simple, jac_simple, 1, &mu };
     gsl_odeiv2_driver *d = gsl_odeiv2_driver_alloc_y_new(&sys,gsl_odeiv2_step_rk1imp, 1e-7, 1e-7, 0.0);
     int i;
-    double t = 0.0, t1 = 2.0;
+    double t = 0.0, t1 = 5.0;
     const double x0 = 1.0;
     double y[1] = {x0};
     const int N = t1/step_size;
@@ -55,10 +55,10 @@ void SIMPLE_ODE_GSL(double step_size) {
             printf("error, return value=%d\n", status);
             break;
         }
-	if(i==1){
-		if(output_mode==2)	printf("\ntime\t \tnumerical sol \t");
+	if(i==1&&output_mode==2){
+		printf("\ntime\t \tnumerical sol \t");
 		if(vf_mode==1) printf("analytical sol\terror diff\terror \%");
-		if(output_mode==2||vf_mode==1) printf("\n");
+		printf("\n");
 	}
         printf("%.5e\t%.5e\t", t, y[0]);
 	if(vf_mode==1) printf("%.5e\t%.5e\t%.5e", ana_sol, (ana_sol-y[0]), (ana_sol-y[0])/ana_sol);

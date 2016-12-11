@@ -16,13 +16,13 @@ problem    = 2
 # For Simple ODE : 1 -> Forward Euler. 2 -> GSL Runge–Kutta method.
 # For Charged particle motion : 1 -> Classical Runge–Kutta method. 2 ->
 
-method  = 1
+method  = 3
 
 #--------------------------------
 # Step Size (h) Selection
 #--------------------------------
 
-step_size   = 0.05
+step_size   = 0.000001
 
 #--------------------------------
 # Verification Mode Selection : 0 is turn off; 1 is turn on.

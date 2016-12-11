@@ -36,5 +36,5 @@ double simpleODE(double t, double y)
 
 void SIMPLE_ODE_FORWARD(double step_size)
 {
-	euler(simpleODE, 1, 0, 2.02, step_size);
+	euler(simpleODE, 1, 0, 5.0+step_size, step_size);
 }
