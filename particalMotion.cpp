@@ -35,6 +35,25 @@ int func_particle(double t, const double y[], double f[], void *params) {
     f[5] = -y[5] / mu;
     return GSL_SUCCESS;
 }
+void jacobian_matrix_print(void)
+{
+	double matrix[6][6] = {{0.0, 0.0, 0.0, 1.0, 0.0, 0.0},
+				{0.0, 0.0, 0.0, 0.0, 1.0, 0.0},
+				{0.0, 0.0, 0.0, 0.0, 0.0, 1.0},
+				{0.0, 0.0, 0.0, -0.2, 5.0, 0.0},
+				{0.0, 0.0, 0.0, -5.0, -0.2, 0.0},
+				{0.0, 0.0, 0.0, 0.0, 0.0, -0.2}};
+	double dfdt[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+	printf ("\nThe initial Jacobian matrix:\n");
+	for (int i = 0; i < 6; i++){
+                for (int j = 0; j < 6; j++){
+                        printf ("m(%d,%d) = %f\n", i, j, matrix[i][j]);
+                }
+        }
+	for (int i=0; i<6; i++)
+                printf("df%d/dt = %f\n", i, dfdt[i]);
+}
+int flag_particle=0;
 int jac_particle(double t, const double y[], double *dfdy, double dfdt[], void *params) {
     (void) (t);  /* avoid unused parameter warning */
     //double mu = *(double *)params;
@@ -77,10 +96,10 @@ int jac_particle(double t, const double y[], double *dfdy, double dfdt[], void *
     gsl_matrix_set(m, 5, 3, 0.0);
     gsl_matrix_set(m, 5, 4, 0.0);
     gsl_matrix_set(m, 5, 5, -1.0/mu);
-    if(output_mode==2){
+    if(output_mode==2&&flag_particle==0){
 	for (int i = 0; i < 6; i++){ 
     		for (int j = 0; j < 6; j++){
-			printf ("The Jacobian matrix:\n");
+			printf ("\nThe initial Jacobian matrix:\n");
       			printf ("m(%d,%d) = %g\n", i, j, gsl_matrix_get (m, i, j));
 		}
 	}
@@ -91,19 +110,21 @@ int jac_particle(double t, const double y[], double *dfdy, double dfdt[], void *
     dfdt[3] = 0.0;
     dfdt[4] = 0.0;
     dfdt[5] = 0.0;
-    if(output_mode==2){
+    if(output_mode==2&&flag_particle==0){
 	for (int i=0; i<6; i++){
 		printf("df%d/dt = %f\n", i, dfdt[i]);
+		//flag_particle=1;
 	}
+	flag_particle=1;
     }
     return GSL_SUCCESS;
 }
-void CHARGED_PARTICAL_MOTION(int m,double step_size) {
+void CHARGED_PARTICAL_MOTION(int method_sl,double step_size) {
     double mu = 5;
     const gsl_odeiv2_step_type* method; //gsl_odeiv2_step_rk4	gsl_odeiv2_step_rkf45 gsl_odeiv2_step_rk8pd
-    if(m==1)	method = gsl_odeiv2_step_rk4;
-    else if(m==2)	method = gsl_odeiv2_step_rk8pd;
-    else	method = gsl_odeiv2_step_rkf45;
+    if(method_sl==1)	method = gsl_odeiv2_step_rk4;
+    else if(method_sl==2)	method = gsl_odeiv2_step_rk8pd;
+    else	method = gsl_odeiv2_step_rk1imp;
     gsl_odeiv2_system sys = { func_particle, jac_particle, 6, &mu };
     gsl_odeiv2_driver *d = gsl_odeiv2_driver_alloc_y_new(&sys, method, 1e-6, 1e-6, 0.0);
     
@@ -129,6 +150,8 @@ void CHARGED_PARTICAL_MOTION(int m,double step_size) {
             printf("error, return value=%d\n", status);
             break;
         }
+	if(output_mode==2&&i==1&&method_sl==3)        printf("\ntime\t \t(x, \t\ty, \t\tz\t)   exact solution(x, \t\ty, \t\tz\t)\n");
+	else if(output_mode==2&&i==1)	jacobian_matrix_print(); 
         printf("%.5e\t%.5e\t%.5e\t%.5e\t%.5e\t%.5e\t%.5e\n", t, y[0], y[1], y[2], ana_x, ana_y, ana_z);
     }
     gsl_odeiv2_driver_free(d);
