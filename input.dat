@@ -16,7 +16,7 @@ problem    = 2
 # For Simple ODE : 1 -> Forward Euler. 2 -> GSL Runge–Kutta method.
 # For Charged particle motion : 1 -> Classical Runge–Kutta method. 2 ->
 
-method  = 1
+method  = 3
 
 #--------------------------------
 # Step Size (h) Selection

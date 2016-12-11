@@ -1,5 +1,5 @@
 set terminal png
-set output 'p2m1_traj.png'
+set output 'p2m2_traj.png'
 #set dummy x,y
 #set parametric
 set view 45, 50, 1, 1
@@ -12,7 +12,7 @@ set yrange[-10.0000 : 10.0000]
 set zrange[0.0000 : 10.0000]
 set xlabel 'X'
 set ylabel 'Y'
-set zlabel 'Z' 
-splot 'p2m1_traj.dat' using 2:3:4 with lines
+set zlabel 'Z'
+splot 'p2m2_traj.dat' using 2:3:4 with lines
 
 exit
