@@ -28,7 +28,7 @@ step_size   = 0.05
 # Verification Mode Selection : 0 is turn off; 1 is turn on.
 #--------------------------------
 
-vf_mode = 0
+vf_mode = 1
 
 #--------------------------------
 # Output Mode Selection : 1 -> Standard output mode. 2 -> Debug output mode.

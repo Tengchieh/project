@@ -45,7 +45,7 @@ void SIMPLE_ODE_GSL(double step_size) {
     const int N = t1/step_size;
 
     printf("\ntime\t \tnumerical sol \t");
-    if(vf_mode==1) printf("analytical sol\terror \%\n");
+    if(vf_mode==1) printf("analytical sol\terror diff\terror \%\n");
 
     for (i = 0; i <= N; i++) {
         double ti = i * step_size;
@@ -57,11 +57,11 @@ void SIMPLE_ODE_GSL(double step_size) {
         }
 	if(i==1){
 		if(output_mode==2)	printf("\ntime\t \tnumerical sol \t");
-		if(vf_mode==1) printf("analytical sol\terror \%");
+		if(vf_mode==1) printf("analytical sol\terror diff\terror \%");
 		if(output_mode==2||vf_mode==1) printf("\n");
 	}
         printf("%.5e\t%.5e\t", t, y[0]);
-	if(vf_mode==1) printf("%.5e\t%.5e", ana_sol, (ana_sol-y[0])/ana_sol);
+	if(vf_mode==1) printf("%.5e\t%.5e\t%.5e", ana_sol, (ana_sol-y[0]), (ana_sol-y[0])/ana_sol);
 	printf("\n");
     }
     gsl_odeiv2_driver_free(d);
