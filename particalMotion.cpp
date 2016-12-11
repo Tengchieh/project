@@ -15,6 +15,8 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <iostream>
+//#include <fstream>
 #include "gsl/gsl_errno.h"
 #include "gsl/gsl_matrix.h"
 #include "gsl/gsl_odeiv2.h"
@@ -113,7 +115,6 @@ int jac_particle(double t, const double y[], double *dfdy, double dfdt[], void *
     if(output_mode==2&&flag_particle==0){
 	for (int i=0; i<6; i++){
 		printf("df%d/dt = %f\n", i, dfdt[i]);
-		//flag_particle=1;
 	}
 	flag_particle=1;
     }
@@ -141,6 +142,9 @@ void CHARGED_PARTICAL_MOTION(int method_sl,double step_size) {
     printf("time\t \t(x, \t\ty, \t\tz\t)");
     if(vf_mode==1) printf("\tanalytical sol(x, y, \t\tz ) \t\terror norm");
     printf("\n");
+
+    //ofstream file;
+    //file.open("p2m%d_traj.dat",method_sl);
     for (i = 0; i <= N; i++) {
         double ti = i * step_size;
         int status = gsl_odeiv2_driver_apply(d, &t, ti, y);
@@ -159,9 +163,11 @@ void CHARGED_PARTICAL_MOTION(int method_sl,double step_size) {
 		printf("\n");
 	}
         printf("%.5e\t%.5e\t%.5e\t%.5e\t", t, y[0], y[1], y[2]);
+	//file << y[0] << " " << y[1] << " " << y[2] << endl;
 	if(vf_mode==1)	printf("%.5e\t%.5e\t%.5e\t%.5e", ana_x, ana_y, ana_z, sqrt(pow(ana_x-y[0],2)+pow(ana_y-y[1],2)+pow(ana_z-y[2],2)));
 	printf("\n");
     }
+    //file.close();
     gsl_odeiv2_driver_free(d);
     printf("\n...and done!\n");
 }
